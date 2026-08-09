@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+:root {
+  --color-anthracite: #1c1f22;
+  --color-anthracite-light: #2a2e33;
+  --color-yellow: #f4c430;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--color-anthracite);
+}
