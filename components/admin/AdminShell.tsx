@@ -10,6 +10,7 @@ import {
   Mail,
   FileText,
   MapPin,
+  BarChart3,
   LogOut,
 } from "lucide-react";
 import { getBrowserSupabase } from "@/lib/supabase/client";
@@ -18,6 +19,7 @@ const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/realisations", label: "Réalisations", icon: HardHat },
   { href: "/admin/messages", label: "Messages", icon: Mail },
+  { href: "/admin/stats", label: "Stats", icon: BarChart3 },
   { href: "/admin/contenu", label: "Textes du site", icon: FileText },
   { href: "/admin/coordonnees", label: "Coordonnées", icon: MapPin },
 ];
