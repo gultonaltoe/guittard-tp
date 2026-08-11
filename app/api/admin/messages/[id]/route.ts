@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isAdminAuthenticated } from "@/lib/auth";
+import { getAdminUser } from "@/lib/supabase/server";
 import { getAdminSupabase } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
@@ -8,7 +8,7 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!(await isAdminAuthenticated())) {
+  if (!(await getAdminUser())) {
     return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   }
   const { id } = await params;
@@ -33,7 +33,7 @@ export async function DELETE(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!(await isAdminAuthenticated())) {
+  if (!(await getAdminUser())) {
     return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   }
   const { id } = await params;

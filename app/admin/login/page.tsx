@@ -2,9 +2,12 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Logo from "@/components/Logo";
+import { getBrowserSupabase } from "@/lib/supabase/client";
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -14,15 +17,15 @@ export default function AdminLoginPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/admin/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+      const supabase = getBrowserSupabase();
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
-      if (!res.ok) {
-        throw new Error("Mot de passe incorrect.");
+      if (signInError) {
+        throw new Error("Email ou mot de passe incorrect.");
       }
-      router.push("/admin/dashboard");
+      router.push("/admin");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inattendue.");
@@ -32,14 +35,32 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-50 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-neutral-100 px-4">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-sm rounded-lg bg-white p-8 shadow-sm ring-1 ring-neutral-200"
+        className="w-full max-w-sm rounded-xl bg-white p-8 shadow-lg ring-1 ring-neutral-200"
       >
-        <h1 className="text-lg font-bold text-[#464746]">Espace admin</h1>
-        <p className="mt-1 text-sm text-neutral-500">Guittard TP &amp; Terrassement</p>
+        <Logo priority />
+        <h1 className="mt-6 text-lg font-bold text-[#464746]">Espace admin</h1>
+        <p className="mt-1 text-sm text-neutral-500">
+          Connectez-vous pour gérer le site.
+        </p>
         <div className="mt-6">
+          <label htmlFor="email" className="block text-sm font-medium text-neutral-700">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            required
+            autoFocus
+            autoComplete="username"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-[#464746] focus:outline-none"
+          />
+        </div>
+        <div className="mt-4">
           <label htmlFor="password" className="block text-sm font-medium text-neutral-700">
             Mot de passe
           </label>
@@ -47,13 +68,15 @@ export default function AdminLoginPage() {
             id="password"
             type="password"
             required
-            autoFocus
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-[#464746] focus:outline-none"
           />
         </div>
-        {error && <p className="mt-3 text-sm text-red-700">{error}</p>}
+        {error && (
+          <p className="mt-3 rounded bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+        )}
         <button
           type="submit"
           disabled={loading}

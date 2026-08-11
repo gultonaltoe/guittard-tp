@@ -45,7 +45,7 @@ export interface ContactMessage {
 export interface ContenuSite {
   id: string;
   cle: string;
-  titre: string;
-  contenu: string;
+  titre: string | null;
+  contenu: string | null;
   updated_at: string;
 }

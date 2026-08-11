@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isAdminAuthenticated } from "@/lib/auth";
+import { getAdminUser } from "@/lib/supabase/server";
 import { getAdminSupabase } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
@@ -8,7 +8,7 @@ const MAX_SIZE = 8 * 1024 * 1024; // 8MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 export async function POST(req: NextRequest) {
-  if (!(await isAdminAuthenticated())) {
+  if (!(await getAdminUser())) {
     return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   }
 
