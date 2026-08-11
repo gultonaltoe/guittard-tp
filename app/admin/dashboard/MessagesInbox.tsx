@@ -49,7 +49,7 @@ export default function MessagesInbox() {
   return (
     <div className="rounded-lg bg-white ring-1 ring-neutral-200">
       <div className="border-b border-neutral-200 px-6 py-4">
-        <h2 className="font-semibold text-[#1c1f22]">Messages ({messages.length})</h2>
+        <h2 className="font-semibold text-[#464746]">Messages ({messages.length})</h2>
       </div>
       {messages.length === 0 ? (
         <p className="px-6 py-6 text-sm text-neutral-500">Aucun message pour l&apos;instant.</p>
@@ -59,7 +59,7 @@ export default function MessagesInbox() {
             <li key={m.id} className={`px-6 py-4 ${m.lu ? "" : "bg-yellow-50"}`}>
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="font-medium text-[#1c1f22]">
+                  <p className="font-medium text-[#464746]">
                     {m.nom} <span className="font-normal text-neutral-500">· {m.email}</span>
                   </p>
                   {m.telephone && <p className="text-xs text-neutral-500">{m.telephone}</p>}
@@ -71,7 +71,7 @@ export default function MessagesInbox() {
                 <div className="flex shrink-0 gap-2">
                   <button
                     onClick={() => markLu(m)}
-                    className="rounded border border-neutral-300 px-3 py-1.5 text-xs font-medium text-neutral-700 hover:border-[#1c1f22]"
+                    className="rounded border border-neutral-300 px-3 py-1.5 text-xs font-medium text-neutral-700 hover:border-[#464746]"
                   >
                     {m.lu ? "Marquer non lu" : "Marquer lu"}
                   </button>

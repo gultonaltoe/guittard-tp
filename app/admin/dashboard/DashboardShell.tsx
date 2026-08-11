@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import RealisationsManager from "./RealisationsManager";
 import MessagesInbox from "./MessagesInbox";
+import ContenuManager from "./ContenuManager";
 
-type Tab = "realisations" | "messages";
+type Tab = "realisations" | "messages" | "contenu";
 
 export default function DashboardShell() {
   const [tab, setTab] = useState<Tab>("realisations");
@@ -21,12 +22,12 @@ export default function DashboardShell() {
     <div className="min-h-screen bg-neutral-50">
       <header className="border-b border-neutral-200 bg-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-          <h1 className="text-lg font-bold text-[#1c1f22]">
+          <h1 className="text-lg font-bold text-[#464746]">
             Espace admin · Guittard TP
           </h1>
           <button
             onClick={handleLogout}
-            className="text-sm font-medium text-neutral-500 hover:text-[#1c1f22]"
+            className="text-sm font-medium text-neutral-500 hover:text-[#464746]"
           >
             Se déconnecter
           </button>
@@ -36,8 +37,8 @@ export default function DashboardShell() {
             onClick={() => setTab("realisations")}
             className={`border-b-2 px-3 py-2 text-sm font-medium ${
               tab === "realisations"
-                ? "border-[#f4c430] text-[#1c1f22]"
-                : "border-transparent text-neutral-500 hover:text-[#1c1f22]"
+                ? "border-[#e9cc1b] text-[#464746]"
+                : "border-transparent text-neutral-500 hover:text-[#464746]"
             }`}
           >
             Réalisations
@@ -46,16 +47,28 @@ export default function DashboardShell() {
             onClick={() => setTab("messages")}
             className={`border-b-2 px-3 py-2 text-sm font-medium ${
               tab === "messages"
-                ? "border-[#f4c430] text-[#1c1f22]"
-                : "border-transparent text-neutral-500 hover:text-[#1c1f22]"
+                ? "border-[#e9cc1b] text-[#464746]"
+                : "border-transparent text-neutral-500 hover:text-[#464746]"
             }`}
           >
             Messages
           </button>
+          <button
+            onClick={() => setTab("contenu")}
+            className={`border-b-2 px-3 py-2 text-sm font-medium ${
+              tab === "contenu"
+                ? "border-[#e9cc1b] text-[#464746]"
+                : "border-transparent text-neutral-500 hover:text-[#464746]"
+            }`}
+          >
+            Contenu
+          </button>
         </div>
       </header>
       <main className="mx-auto max-w-5xl px-4 py-8">
-        {tab === "realisations" ? <RealisationsManager /> : <MessagesInbox />}
+        {tab === "realisations" && <RealisationsManager />}
+        {tab === "messages" && <MessagesInbox />}
+        {tab === "contenu" && <ContenuManager />}
       </main>
     </div>
   );

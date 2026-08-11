@@ -37,7 +37,7 @@ export default function AdminLoginPage() {
         onSubmit={handleSubmit}
         className="w-full max-w-sm rounded-lg bg-white p-8 shadow-sm ring-1 ring-neutral-200"
       >
-        <h1 className="text-lg font-bold text-[#1c1f22]">Espace admin</h1>
+        <h1 className="text-lg font-bold text-[#464746]">Espace admin</h1>
         <p className="mt-1 text-sm text-neutral-500">Guittard TP &amp; Terrassement</p>
         <div className="mt-6">
           <label htmlFor="password" className="block text-sm font-medium text-neutral-700">
@@ -50,14 +50,14 @@ export default function AdminLoginPage() {
             autoFocus
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-[#1c1f22] focus:outline-none"
+            className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-[#464746] focus:outline-none"
           />
         </div>
         {error && <p className="mt-3 text-sm text-red-700">{error}</p>}
         <button
           type="submit"
           disabled={loading}
-          className="mt-6 w-full rounded bg-[#1c1f22] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#2a2e33] disabled:opacity-50"
+          className="mt-6 w-full rounded bg-[#464746] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#5a5b5a] disabled:opacity-50"
         >
           {loading ? "Connexion..." : "Se connecter"}
         </button>

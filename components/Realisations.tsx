@@ -23,7 +23,7 @@ export default function Realisations({
   return (
     <section id="realisations" className="bg-neutral-50 py-20">
       <div className="mx-auto max-w-6xl px-4">
-        <h2 className="text-2xl font-bold text-[#1c1f22] sm:text-3xl">
+        <h2 className="text-2xl font-bold text-[#464746] sm:text-3xl">
           Nos réalisations
         </h2>
         <p className="mt-2 max-w-2xl text-neutral-600">
@@ -41,8 +41,8 @@ export default function Realisations({
                 onClick={() => setFiltre("toutes")}
                 className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
                   filtre === "toutes"
-                    ? "bg-[#1c1f22] text-white"
-                    : "bg-white text-neutral-700 ring-1 ring-neutral-200 hover:ring-[#f4c430]"
+                    ? "bg-[#464746] text-white"
+                    : "bg-white text-neutral-700 ring-1 ring-neutral-200 hover:ring-[#e9cc1b]"
                 }`}
               >
                 Toutes
@@ -53,8 +53,8 @@ export default function Realisations({
                   onClick={() => setFiltre(c.value)}
                   className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
                     filtre === c.value
-                      ? "bg-[#1c1f22] text-white"
-                      : "bg-white text-neutral-700 ring-1 ring-neutral-200 hover:ring-[#f4c430]"
+                      ? "bg-[#464746] text-white"
+                      : "bg-white text-neutral-700 ring-1 ring-neutral-200 hover:ring-[#e9cc1b]"
                   }`}
                 >
                   {c.label}
@@ -86,7 +86,7 @@ export default function Realisations({
                     <p className="text-xs font-semibold uppercase tracking-wide text-[#b8901f]">
                       {CATEGORIES.find((c) => c.value === r.categorie)?.label}
                     </p>
-                    <h3 className="mt-1 font-semibold text-[#1c1f22]">
+                    <h3 className="mt-1 font-semibold text-[#464746]">
                       {r.titre}
                     </h3>
                     {r.description && (

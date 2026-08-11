@@ -41,3 +41,11 @@ export interface ContactMessage {
   lu: boolean;
   created_at: string;
 }
+
+export interface ContenuSite {
+  id: string;
+  cle: string;
+  titre: string;
+  contenu: string;
+  updated_at: string;
+}

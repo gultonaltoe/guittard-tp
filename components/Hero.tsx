@@ -1,12 +1,22 @@
+import Image from "next/image";
+
 export default function Hero({ telephone }: { telephone: string }) {
   const telHref = `tel:${telephone.replace(/\s+/g, "")}`;
   return (
     <section
       id="accueil"
-      className="bg-[#1c1f22] text-white"
+      className="relative overflow-hidden bg-[#464746] text-white"
     >
-      <div className="mx-auto max-w-6xl px-4 py-20">
-        <p className="mb-3 inline-block rounded bg-[#f4c430] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#1c1f22]">
+      <Image
+        src="/logo-icone.png"
+        alt=""
+        aria-hidden="true"
+        width={721}
+        height={334}
+        className="pointer-events-none absolute right-0 top-1/2 hidden h-auto w-[560px] -translate-y-1/2 opacity-[0.22] md:block"
+      />
+      <div className="relative mx-auto max-w-6xl px-4 py-20">
+        <p className="mb-3 inline-block rounded bg-[#e9cc1b] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#464746]">
           Terrassement &amp; Travaux Publics dans le Haut-Rhin
         </p>
         <h1 className="max-w-3xl text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
@@ -19,7 +29,7 @@ export default function Hero({ telephone }: { telephone: string }) {
         <div className="mt-8 flex flex-wrap gap-3">
           <a
             href="#contact"
-            className="rounded bg-[#f4c430] px-6 py-3 text-sm font-semibold text-[#1c1f22] hover:brightness-95"
+            className="rounded bg-[#e9cc1b] px-6 py-3 text-sm font-semibold text-[#464746] hover:brightness-95"
           >
             Contacter
           </a>

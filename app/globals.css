@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --color-anthracite: #1c1f22;
-  --color-anthracite-light: #2a2e33;
-  --color-yellow: #f4c430;
+  --color-anthracite: #464746;
+  --color-anthracite-light: #5a5b5a;
+  --color-yellow: #e9cc1b;
 }
 
 html {

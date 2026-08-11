@@ -103,7 +103,7 @@ export default function RealisationsManager() {
   return (
     <div className="space-y-8">
       <form onSubmit={handleCreate} className="rounded-lg bg-white p-6 ring-1 ring-neutral-200">
-        <h2 className="font-semibold text-[#1c1f22]">Ajouter une réalisation</h2>
+        <h2 className="font-semibold text-[#464746]">Ajouter une réalisation</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div>
             <label className="block text-sm font-medium text-neutral-700">Titre</label>
@@ -150,7 +150,7 @@ export default function RealisationsManager() {
         <button
           type="submit"
           disabled={saving}
-          className="mt-4 rounded bg-[#1c1f22] px-5 py-2 text-sm font-semibold text-white hover:bg-[#2a2e33] disabled:opacity-50"
+          className="mt-4 rounded bg-[#464746] px-5 py-2 text-sm font-semibold text-white hover:bg-[#5a5b5a] disabled:opacity-50"
         >
           {saving ? "Enregistrement..." : "Ajouter"}
         </button>
@@ -159,7 +159,7 @@ export default function RealisationsManager() {
 
       <div className="rounded-lg bg-white ring-1 ring-neutral-200">
         <div className="border-b border-neutral-200 px-6 py-4">
-          <h2 className="font-semibold text-[#1c1f22]">Réalisations ({items.length})</h2>
+          <h2 className="font-semibold text-[#464746]">Réalisations ({items.length})</h2>
         </div>
         {loading ? (
           <p className="px-6 py-6 text-sm text-neutral-500">Chargement...</p>
@@ -170,7 +170,7 @@ export default function RealisationsManager() {
             {items.map((item) => (
               <li key={item.id} className="flex items-center justify-between gap-4 px-6 py-4">
                 <div>
-                  <p className="font-medium text-[#1c1f22]">{item.titre}</p>
+                  <p className="font-medium text-[#464746]">{item.titre}</p>
                   <p className="text-xs text-neutral-500">
                     {CATEGORIES.find((c) => c.value === item.categorie)?.label} ·{" "}
                     {item.publie ? "Publiée" : "Masquée"}
@@ -179,7 +179,7 @@ export default function RealisationsManager() {
                 <div className="flex shrink-0 gap-2">
                   <button
                     onClick={() => togglePublie(item)}
-                    className="rounded border border-neutral-300 px-3 py-1.5 text-xs font-medium text-neutral-700 hover:border-[#1c1f22]"
+                    className="rounded border border-neutral-300 px-3 py-1.5 text-xs font-medium text-neutral-700 hover:border-[#464746]"
                   >
                     {item.publie ? "Masquer" : "Publier"}
                   </button>

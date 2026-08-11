@@ -43,7 +43,7 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
 
   return (
     <section id="contact" className="mx-auto max-w-6xl px-4 py-20">
-      <h2 className="text-2xl font-bold text-[#1c1f22] sm:text-3xl">
+      <h2 className="text-2xl font-bold text-[#464746] sm:text-3xl">
         Nous contacter
       </h2>
       <p className="mt-2 max-w-2xl text-neutral-600">
@@ -54,13 +54,13 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
       <div className="mt-10 grid gap-10 lg:grid-cols-2">
         <ul className="space-y-3 text-sm text-neutral-700">
           <li>
-            <span className="font-semibold text-[#1c1f22]">Téléphone : </span>
+            <span className="font-semibold text-[#464746]">Téléphone : </span>
             <a href={telHref} className="hover:text-[#b8901f]">
               {settings.telephone}
             </a>
           </li>
           <li>
-            <span className="font-semibold text-[#1c1f22]">Email : </span>
+            <span className="font-semibold text-[#464746]">Email : </span>
             <a
               href={`mailto:${settings.email}`}
               className="hover:text-[#b8901f]"
@@ -69,11 +69,11 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
             </a>
           </li>
           <li>
-            <span className="font-semibold text-[#1c1f22]">Adresse : </span>
+            <span className="font-semibold text-[#464746]">Adresse : </span>
             {settings.adresse}
           </li>
           <li>
-            <span className="font-semibold text-[#1c1f22]">
+            <span className="font-semibold text-[#464746]">
               Zone d&apos;intervention :{" "}
             </span>
             {settings.zone_intervention}
@@ -90,7 +90,7 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
               name="nom"
               required
               maxLength={200}
-              className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-[#1c1f22] focus:outline-none"
+              className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-[#464746] focus:outline-none"
             />
           </div>
           <div>
@@ -102,7 +102,7 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
               name="email"
               type="email"
               required
-              className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-[#1c1f22] focus:outline-none"
+              className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-[#464746] focus:outline-none"
             />
           </div>
           <div>
@@ -112,7 +112,7 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
             <input
               id="telephone"
               name="telephone"
-              className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-[#1c1f22] focus:outline-none"
+              className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-[#464746] focus:outline-none"
             />
           </div>
           <div>
@@ -125,13 +125,13 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
               required
               maxLength={5000}
               rows={4}
-              className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-[#1c1f22] focus:outline-none"
+              className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-[#464746] focus:outline-none"
             />
           </div>
           <button
             type="submit"
             disabled={status === "loading"}
-            className="rounded bg-[#1c1f22] px-6 py-3 text-sm font-semibold text-white hover:bg-[#2a2e33] disabled:opacity-50"
+            className="rounded bg-[#464746] px-6 py-3 text-sm font-semibold text-white hover:bg-[#5a5b5a] disabled:opacity-50"
           >
             {status === "loading" ? "Envoi..." : "Envoyer ma demande"}
           </button>
