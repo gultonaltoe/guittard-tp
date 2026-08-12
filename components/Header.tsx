@@ -1,12 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Header({ telephone }: { telephone: string }) {
-  const telHref = `tel:${telephone.replace(/\s+/g, "")}`;
+export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link href="#accueil" className="flex items-center gap-3 leading-none">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
+        <Link href="#accueil" className="flex min-w-0 items-center gap-3 leading-none">
           <Image
             src="/logo-guittard-badge.png"
             alt=""
@@ -15,7 +14,7 @@ export default function Header({ telephone }: { telephone: string }) {
             height={48}
             priority
           />
-          <span className="whitespace-nowrap text-[15px] font-bold leading-none tracking-wide text-[#464746]">
+          <span className="truncate text-[15px] font-bold leading-none tracking-wide text-[#464746]">
             GUITTARD TP &amp; TERRASSEMENT
           </span>
         </Link>
@@ -31,10 +30,10 @@ export default function Header({ telephone }: { telephone: string }) {
           </Link>
         </nav>
         <a
-          href={telHref}
-          className="rounded bg-[#e9cc1b] px-4 py-2 text-sm font-semibold leading-none text-[#464746] hover:bg-[#d8bd18]"
+          href="#contact"
+          className="shrink-0 rounded bg-[#e9cc1b] px-4 py-2 text-sm font-semibold leading-none text-[#464746] hover:bg-[#d8bd18]"
         >
-          {telephone}
+          Contacter
         </a>
       </div>
     </header>

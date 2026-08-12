@@ -61,7 +61,7 @@ export default async function HomePage() {
   const notreHistoire = contenus.find((c) => c.cle === "notre_histoire");
   return (
     <>
-      <Header telephone={settings.telephone} />
+      <Header />
       <main>
         <Hero telephone={settings.telephone} />
         <Prestations />
