@@ -31,7 +31,7 @@ export default function Hero({ telephone }: { telephone: string }) {
             href="#contact"
             className="rounded bg-[#e9cc1b] px-6 py-3 text-sm font-semibold text-[#464746] hover:brightness-95"
           >
-            Contacter
+            Nous contacter
           </a>
           <a
             href={telHref}

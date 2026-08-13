@@ -33,7 +33,8 @@ export default function Header() {
           href="#contact"
           className="shrink-0 rounded bg-[#e9cc1b] px-4 py-2 text-sm font-semibold leading-none text-[#464746] hover:bg-[#d8bd18]"
         >
-          Contacter
+          <span className="sm:hidden">Devis</span>
+          <span className="hidden sm:inline">Devis gratuit</span>
         </a>
       </div>
     </header>
