@@ -42,7 +42,7 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
   }
 
   return (
-    <section id="contact" className="mx-auto max-w-6xl px-4 py-20">
+    <section id="contact" className="mx-auto max-w-6xl px-4 py-10 md:py-20">
       <h2 className="text-2xl font-bold text-[#464746] sm:text-3xl">
         Nous contacter
       </h2>

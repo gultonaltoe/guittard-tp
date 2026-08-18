@@ -21,7 +21,7 @@ export default function Realisations({
       : realisations.filter((r) => r.categorie === filtre);
 
   return (
-    <section id="realisations" className="bg-neutral-50 py-20">
+    <section id="realisations" className="bg-neutral-50 py-10 md:py-20">
       <div className="mx-auto max-w-6xl px-4">
         <h2 className="text-2xl font-bold text-[#464746] sm:text-3xl">
           Nos réalisations

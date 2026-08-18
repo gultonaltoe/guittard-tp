@@ -15,7 +15,7 @@ export default function Hero({ telephone }: { telephone: string }) {
         height={334}
         className="pointer-events-none absolute right-0 top-1/2 hidden h-auto w-[560px] -translate-y-1/2 opacity-[0.22] md:block"
       />
-      <div className="relative mx-auto max-w-6xl px-4 py-20">
+      <div className="relative mx-auto max-w-6xl px-4 py-10 md:py-20">
         <p className="mb-3 inline-block rounded bg-[#e9cc1b] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#464746]">
           Terrassement &amp; Travaux Publics dans le Haut-Rhin
         </p>

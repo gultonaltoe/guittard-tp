@@ -8,7 +8,7 @@ export default function NotreHistoire({
   contenu: string;
 }) {
   return (
-    <div className="bg-[#f6f5f2] px-4 py-20">
+    <div className="bg-[#f6f5f2] px-4 py-10 md:py-20">
       <div className="mx-auto max-w-[500px] text-center">
         <div className="mx-auto h-[22px] w-[3px] bg-[#e9cc1b]" />
         <h2 className="mt-4 text-2xl font-medium text-[#464746]">{titre}</h2>
