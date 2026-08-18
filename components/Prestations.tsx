@@ -41,20 +41,24 @@ export default function Prestations() {
         Une équipe équipée pour intervenir sur tous types de chantiers, du
         particulier au professionnel.
       </p>
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 sm:gap-6 md:mt-10 lg:grid-cols-4">
         {PRESTATIONS.map((p) => (
           <div
             key={p.titre}
-            className="rounded-lg border border-neutral-200 p-6 transition-all duration-150 hover:-translate-y-0.5 hover:border-[#e9cc1b] hover:shadow-md"
+            className="rounded-lg border border-neutral-200 p-4 transition-all duration-150 hover:-translate-y-0.5 hover:border-[#e9cc1b] hover:shadow-md sm:p-6"
           >
-            <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-[#e9cc1b]">
-              <p.Icon className="h-5 w-5 text-[#464746]" strokeWidth={2} />
+            <div className="flex items-center gap-3 sm:block">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e9cc1b] sm:mb-4">
+                <p.Icon className="h-5 w-5 text-[#464746]" strokeWidth={2} />
+              </div>
+              <h3 className="font-semibold text-[#464746]">{p.titre}</h3>
             </div>
-            <h3 className="font-semibold text-[#464746]">{p.titre}</h3>
             <p className="mt-1 text-sm font-medium text-neutral-500">
               {p.accroche}
             </p>
-            <p className="mt-3 text-sm text-neutral-600">{p.description}</p>
+            <p className="mt-1.5 text-sm text-neutral-600 sm:mt-3">
+              {p.description}
+            </p>
           </div>
         ))}
       </div>
