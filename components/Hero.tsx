@@ -20,12 +20,8 @@ export default function Hero({ telephone }: { telephone: string }) {
           Terrassement &amp; Travaux Publics dans le Haut-Rhin
         </p>
         <h1 className="max-w-3xl text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
-          Terrassement, VRD et aménagements extérieurs pour particuliers et
-          professionnels
+          VRD et aménagements extérieurs pour particuliers et professionnels
         </h1>
-        <p className="mt-4 max-w-xl text-neutral-300">
-          Interventions dans le Haut-Rhin &amp; alentours.
-        </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <a
             href="#contact"
