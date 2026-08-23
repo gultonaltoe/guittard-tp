@@ -1,11 +1,18 @@
 import { Shovel, Route, Fence, Trees } from "lucide-react";
 
-const PRESTATIONS = [
+const PRESTATIONS: {
+  titre: string;
+  accroche: string;
+  description: string;
+  categorie: string;
+  Icon: typeof Shovel;
+}[] = [
   {
     titre: "Terrassement",
     accroche: "Préparer et niveler votre terrain",
     description:
       "Préparation de terrain, fouilles, terrassement pour construction neuve, piscine ou assainissement.",
+    categorie: "terrassement",
     Icon: Shovel,
   },
   {
@@ -13,6 +20,7 @@ const PRESTATIONS = [
     accroche: "Accès, réseaux et assainissement",
     description:
       "Voirie et réseaux divers : accès, assainissement, réseaux enterrés pour vos projets de construction.",
+    categorie: "vrd",
     Icon: Route,
   },
   {
@@ -20,6 +28,7 @@ const PRESTATIONS = [
     accroche: "Terrasses, allées et abords de piscine",
     description:
       "Terrasses, allées, dallages, escaliers extérieurs, abords de piscine : finitions soignées.",
+    categorie: "amenagement_exterieur",
     Icon: Fence,
   },
   {
@@ -27,6 +36,7 @@ const PRESTATIONS = [
     accroche: "Débroussailler et dégager un terrain",
     description:
       "Débroussaillage et défrichage de terrains avant travaux ou pour l'entretien de vos parcelles.",
+    categorie: "defrichage",
     Icon: Trees,
   },
 ];
@@ -43,9 +53,10 @@ export default function Prestations() {
       </p>
       <div className="mt-6 grid gap-4 sm:grid-cols-2 sm:gap-6 md:mt-10 lg:grid-cols-4">
         {PRESTATIONS.map((p) => (
-          <div
+          <a
             key={p.titre}
-            className="rounded-lg border border-neutral-200 p-4 transition-all duration-150 hover:-translate-y-0.5 hover:border-[#e9cc1b] hover:shadow-md sm:p-6"
+            href={`/?type=${p.categorie}#realisations`}
+            className="block rounded-lg border border-neutral-200 p-4 transition-all duration-150 hover:-translate-y-0.5 hover:border-[#e9cc1b] hover:shadow-md sm:p-6"
           >
             <div className="flex items-center gap-3 sm:block">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e9cc1b] sm:mb-4">
@@ -59,7 +70,7 @@ export default function Prestations() {
             <p className="mt-1.5 text-sm text-neutral-600 sm:mt-3">
               {p.description}
             </p>
-          </div>
+          </a>
         ))}
       </div>
     </section>

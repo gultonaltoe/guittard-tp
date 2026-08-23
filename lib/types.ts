@@ -1,21 +1,14 @@
-export type Categorie =
-  | "terrassement"
-  | "vrd"
-  | "amenagement_exterieur"
-  | "defrichage";
-
-export const CATEGORIES: { value: Categorie; label: string }[] = [
-  { value: "terrassement", label: "Terrassement" },
-  { value: "vrd", label: "VRD" },
-  { value: "amenagement_exterieur", label: "Aménagements extérieurs" },
-  { value: "defrichage", label: "Défrichage" },
-];
+export interface TypeRealisation {
+  slug: string;
+  label: string;
+  position: number;
+}
 
 export interface Realisation {
   id: string;
   titre: string;
   description: string | null;
-  categorie: Categorie;
+  categorie: string;
   photos: string[];
   position: number;
   publie: boolean;

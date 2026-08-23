@@ -1,18 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import type { Realisation } from "@/lib/types";
-import { CATEGORIES } from "@/lib/types";
+import type { Realisation, TypeRealisation } from "@/lib/types";
+import Lightbox from "@/components/Lightbox";
+
+const THUMBS_VISIBLE = 3;
 
 export default function Realisations({
   realisations,
+  types,
+  filtreInitial,
 }: {
   realisations: Realisation[];
+  types: TypeRealisation[];
+  filtreInitial?: string;
 }) {
-  const [filtre, setFiltre] = useState<string>("toutes");
+  const filtreInitialValide = types.some((t) => t.slug === filtreInitial)
+    ? (filtreInitial as string)
+    : "toutes";
+  const [filtre, setFiltre] = useState<string>(filtreInitialValide);
+  const [lightbox, setLightbox] = useState<{
+    photos: string[];
+    index: number;
+    titre: string;
+  } | null>(null);
 
-  const categoriesPresentes = CATEGORIES.filter((c) =>
-    realisations.some((r) => r.categorie === c.value)
+  const categoriesPresentes = types.filter(
+    (t) => realisations.some((r) => r.categorie === t.slug) || t.slug === filtre
   );
 
   const visibles =
@@ -47,20 +61,26 @@ export default function Realisations({
               >
                 Toutes
               </button>
-              {categoriesPresentes.map((c) => (
+              {categoriesPresentes.map((t) => (
                 <button
-                  key={c.value}
-                  onClick={() => setFiltre(c.value)}
+                  key={t.slug}
+                  onClick={() => setFiltre(t.slug)}
                   className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
-                    filtre === c.value
+                    filtre === t.slug
                       ? "bg-[#464746] text-white"
                       : "bg-white text-neutral-700 ring-1 ring-neutral-200 hover:ring-[#e9cc1b]"
                   }`}
                 >
-                  {c.label}
+                  {t.label}
                 </button>
               ))}
             </div>
+
+            {visibles.length === 0 && (
+              <p className="mt-10 text-sm text-neutral-500">
+                Aucune réalisation dans cette catégorie pour le moment.
+              </p>
+            )}
 
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {visibles.map((r) => (
@@ -70,21 +90,59 @@ export default function Realisations({
                 >
                   <div className="aspect-video w-full bg-neutral-200">
                     {r.photos[0] ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={r.photos[0]}
-                        alt={r.titre}
-                        className="h-full w-full object-cover"
-                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setLightbox({ photos: r.photos, index: 0, titre: r.titre })
+                        }
+                        className="block h-full w-full"
+                        aria-label={`Voir les photos de ${r.titre}`}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={r.photos[0]}
+                          alt={r.titre}
+                          loading="lazy"
+                          className="h-full w-full object-cover"
+                        />
+                      </button>
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-xs text-neutral-400">
                         Photo à venir
                       </div>
                     )}
                   </div>
+                  {r.photos.length > 1 && (
+                    <div className="flex gap-0.5 bg-white p-0.5">
+                      {r.photos.slice(1, 1 + THUMBS_VISIBLE).map((url, i) => (
+                        <button
+                          key={url}
+                          type="button"
+                          onClick={() =>
+                            setLightbox({ photos: r.photos, index: i + 1, titre: r.titre })
+                          }
+                          className="relative h-14 w-14 shrink-0 overflow-hidden rounded"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={url}
+                            alt=""
+                            loading="lazy"
+                            className="h-full w-full object-cover"
+                          />
+                          {i === THUMBS_VISIBLE - 1 &&
+                            r.photos.length > 1 + THUMBS_VISIBLE && (
+                              <span className="absolute inset-0 flex items-center justify-center bg-black/50 text-sm font-semibold text-white">
+                                +{r.photos.length - THUMBS_VISIBLE}
+                              </span>
+                            )}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                   <div className="p-4">
                     <p className="text-xs font-semibold uppercase tracking-wide text-[#b8901f]">
-                      {CATEGORIES.find((c) => c.value === r.categorie)?.label}
+                      {types.find((t) => t.slug === r.categorie)?.label}
                     </p>
                     <h3 className="mt-1 font-semibold text-[#464746]">
                       {r.titre}
@@ -101,6 +159,14 @@ export default function Realisations({
           </>
         )}
       </div>
+      {lightbox && (
+        <Lightbox
+          photos={lightbox.photos}
+          initialIndex={lightbox.index}
+          titre={lightbox.titre}
+          onClose={() => setLightbox(null)}
+        />
+      )}
     </section>
   );
 }

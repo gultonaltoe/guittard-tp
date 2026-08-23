@@ -6,7 +6,7 @@ import Realisations from "@/components/Realisations";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import { getPublicSupabase } from "@/lib/supabase";
-import type { ContenuSite, Realisation, SiteSettings } from "@/lib/types";
+import type { ContenuSite, Realisation, SiteSettings, TypeRealisation } from "@/lib/types";
 
 // Cette page interroge Supabase à chaque requête : pas de rendu statique,
 // donc aucune dépendance à la base de données pendant le build Vercel.
@@ -30,7 +30,7 @@ const DEFAULT_NOTRE_HISTOIRE = {
 async function getData() {
   try {
     const supabase = getPublicSupabase();
-    const [{ data: realisations }, { data: settings }, { data: contenus }] =
+    const [{ data: realisations }, { data: settings }, { data: contenus }, { data: types }] =
       await Promise.all([
         supabase
           .from("realisations")
@@ -39,11 +39,13 @@ async function getData() {
           .order("position", { ascending: true }),
         supabase.from("site_settings").select("*").eq("id", 1).single(),
         supabase.from("contenu_site").select("*"),
+        supabase.from("types_realisation").select("*").order("position", { ascending: true }),
       ]);
     return {
       realisations: (realisations as Realisation[]) ?? [],
       settings: (settings as SiteSettings) ?? DEFAULT_SETTINGS,
       contenus: (contenus as ContenuSite[]) ?? [],
+      types: (types as TypeRealisation[]) ?? [],
     };
   } catch {
     // Si Supabase est momentanément indisponible ou mal configuré, le site
@@ -52,13 +54,20 @@ async function getData() {
       realisations: [] as Realisation[],
       settings: DEFAULT_SETTINGS,
       contenus: [] as ContenuSite[],
+      types: [] as TypeRealisation[],
     };
   }
 }
 
-export default async function HomePage() {
-  const { realisations, settings, contenus } = await getData();
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const { realisations, settings, contenus, types } = await getData();
   const notreHistoire = contenus.find((c) => c.cle === "notre_histoire");
+  const { type } = await searchParams;
+  const filtreInitial = typeof type === "string" ? type : undefined;
   return (
     <>
       <Header />
@@ -71,7 +80,11 @@ export default async function HomePage() {
             contenu={notreHistoire?.contenu ?? DEFAULT_NOTRE_HISTOIRE.contenu}
           />
         </section>
-        <Realisations realisations={realisations} />
+        <Realisations
+          realisations={realisations}
+          types={types}
+          filtreInitial={filtreInitial}
+        />
         <Contact settings={settings} />
       </main>
       <Footer settings={settings} />
