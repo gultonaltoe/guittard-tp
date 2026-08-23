@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  LayoutDashboard,
   HardHat,
+  Tags,
   Mail,
   FileText,
   MapPin,
@@ -16,10 +16,10 @@ import {
 import { getBrowserSupabase } from "@/lib/supabase/client";
 
 const NAV_ITEMS = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
-  { href: "/admin/realisations", label: "Réalisations", icon: HardHat },
-  { href: "/admin/messages", label: "Messages", icon: Mail },
   { href: "/admin/stats", label: "Stats", icon: BarChart3 },
+  { href: "/admin/realisations", label: "Réalisations", icon: HardHat },
+  { href: "/admin/types-realisation", label: "Types de réalisations", icon: Tags },
+  { href: "/admin/messages", label: "Messages", icon: Mail },
   { href: "/admin/contenu", label: "Textes du site", icon: FileText },
   { href: "/admin/coordonnees", label: "Coordonnées", icon: MapPin },
 ];
@@ -34,8 +34,8 @@ export default function AdminShell({
   const pathname = usePathname();
   const router = useRouter();
 
-  function isActive(href: string, exact?: boolean) {
-    return exact ? pathname === href : pathname.startsWith(href);
+  function isActive(href: string) {
+    return pathname.startsWith(href);
   }
 
   async function handleLogout() {
@@ -63,8 +63,8 @@ export default function AdminShell({
           </div>
         </div>
         <nav className="mt-2 flex flex-1 flex-col gap-1 px-3">
-          {NAV_ITEMS.map(({ href, label, icon: Icon, exact }) => {
-            const active = isActive(href, exact);
+          {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+            const active = isActive(href);
             return (
               <Link
                 key={href}
@@ -117,8 +117,8 @@ export default function AdminShell({
           </button>
         </div>
         <nav className="flex gap-1 overflow-x-auto px-3 pb-2">
-          {NAV_ITEMS.map(({ href, label, icon: Icon, exact }) => {
-            const active = isActive(href, exact);
+          {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+            const active = isActive(href);
             return (
               <Link
                 key={href}
