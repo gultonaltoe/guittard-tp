@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Realisation, Categorie } from "@/lib/types";
-import { CATEGORIES } from "@/lib/types";
+import type { Realisation, TypeRealisation } from "@/lib/types";
 import RealisationForm, { type RealisationFormValues } from "./RealisationForm";
 import {
   DndContext,
@@ -16,16 +15,9 @@ import { SortableContext, arrayMove, verticalListSortingStrategy, useSortable } 
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical, Pencil, Trash2 } from "lucide-react";
 
-const EMPTY_FORM: RealisationFormValues = {
-  titre: "",
-  description: "",
-  categorie: "terrassement" as Categorie,
-  publie: true,
-  photos: [],
-};
-
 export default function RealisationsManager() {
   const [items, setItems] = useState<Realisation[]>([]);
+  const [types, setTypes] = useState<TypeRealisation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [creating, setCreating] = useState(false);
@@ -36,10 +28,14 @@ export default function RealisationsManager() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/admin/realisations");
-      if (!res.ok) throw new Error("Erreur de chargement.");
-      const body = await res.json();
-      setItems(body.realisations ?? []);
+      const [resItems, resTypes] = await Promise.all([
+        fetch("/api/admin/realisations"),
+        fetch("/api/admin/types-realisation"),
+      ]);
+      if (!resItems.ok || !resTypes.ok) throw new Error("Erreur de chargement.");
+      const [bodyItems, bodyTypes] = await Promise.all([resItems.json(), resTypes.json()]);
+      setItems(bodyItems.realisations ?? []);
+      setTypes(bodyTypes.types ?? []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inattendue.");
     } finally {
@@ -51,6 +47,14 @@ export default function RealisationsManager() {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- fetch-on-mount, intentional
     load();
   }, []);
+
+  const emptyForm: RealisationFormValues = {
+    titre: "",
+    description: "",
+    categorie: types[0]?.slug ?? "",
+    publie: true,
+    photos: [],
+  };
 
   async function handleCreate(values: RealisationFormValues) {
     const res = await fetch("/api/admin/realisations", {
@@ -128,8 +132,8 @@ export default function RealisationsManager() {
     }
   }
 
-  const categoriesPresentes = CATEGORIES.filter((c) =>
-    items.some((i) => i.categorie === c.value)
+  const categoriesPresentes = types.filter((t) =>
+    items.some((i) => i.categorie === t.slug)
   );
   const visibles = filtre === "toutes" ? items : items.filter((i) => i.categorie === filtre);
   const canReorder = filtre === "toutes";
@@ -148,17 +152,17 @@ export default function RealisationsManager() {
           >
             Toutes
           </button>
-          {categoriesPresentes.map((c) => (
+          {categoriesPresentes.map((t) => (
             <button
-              key={c.value}
-              onClick={() => setFiltre(c.value)}
+              key={t.slug}
+              onClick={() => setFiltre(t.slug)}
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
-                filtre === c.value
+                filtre === t.slug
                   ? "bg-[#464746] text-white"
                   : "bg-white text-neutral-700 ring-1 ring-neutral-200 hover:ring-[#e9cc1b]"
               }`}
             >
-              {c.label}
+              {t.label}
             </button>
           ))}
         </div>
@@ -178,7 +182,8 @@ export default function RealisationsManager() {
           <h2 className="font-semibold text-[#464746]">Nouvelle réalisation</h2>
           <div className="mt-4">
             <RealisationForm
-              initial={EMPTY_FORM}
+              initial={emptyForm}
+              types={types}
               submitLabel="Créer la réalisation"
               onSubmit={handleCreate}
               onCancel={() => setCreating(false)}
@@ -211,6 +216,7 @@ export default function RealisationsManager() {
                   <RealisationRow
                     key={item.id}
                     item={item}
+                    types={types}
                     editing={editingId === item.id}
                     sortable
                     onEdit={() => {
@@ -232,6 +238,7 @@ export default function RealisationsManager() {
               <RealisationRow
                 key={item.id}
                 item={item}
+                types={types}
                 editing={editingId === item.id}
                 sortable={false}
                 onEdit={() => {
@@ -253,6 +260,7 @@ export default function RealisationsManager() {
 
 function RealisationRow({
   item,
+  types,
   editing,
   sortable,
   onEdit,
@@ -262,6 +270,7 @@ function RealisationRow({
   onDelete,
 }: {
   item: Realisation;
+  types: TypeRealisation[];
   editing: boolean;
   sortable: boolean;
   onEdit: () => void;
@@ -291,6 +300,7 @@ function RealisationRow({
             publie: item.publie,
             photos: item.photos,
           }}
+          types={types}
           submitLabel="Enregistrer"
           onSubmit={onSaveEdit}
           onCancel={onCancelEdit}
@@ -329,7 +339,7 @@ function RealisationRow({
       <div className="min-w-0 flex-1">
         <p className="truncate font-medium text-[#464746]">{item.titre}</p>
         <p className="text-xs text-neutral-500">
-          {CATEGORIES.find((c) => c.value === item.categorie)?.label}
+          {types.find((t) => t.slug === item.categorie)?.label}
         </p>
       </div>
 

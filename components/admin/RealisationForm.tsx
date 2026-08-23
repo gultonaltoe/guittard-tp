@@ -1,25 +1,26 @@
 "use client";
 
 import { useId, useState, type FormEvent } from "react";
-import type { Categorie } from "@/lib/types";
-import { CATEGORIES } from "@/lib/types";
+import type { TypeRealisation } from "@/lib/types";
 import PhotoUploader from "./PhotoUploader";
 
 export interface RealisationFormValues {
   titre: string;
   description: string;
-  categorie: Categorie;
+  categorie: string;
   publie: boolean;
   photos: string[];
 }
 
 export default function RealisationForm({
   initial,
+  types,
   submitLabel,
   onSubmit,
   onCancel,
 }: {
   initial: RealisationFormValues;
+  types: TypeRealisation[];
   submitLabel: string;
   onSubmit: (values: RealisationFormValues) => Promise<void>;
   onCancel?: () => void;
@@ -58,12 +59,12 @@ export default function RealisationForm({
           <label className="block text-sm font-medium text-neutral-700">Catégorie</label>
           <select
             value={values.categorie}
-            onChange={(e) => setValues({ ...values, categorie: e.target.value as Categorie })}
+            onChange={(e) => setValues({ ...values, categorie: e.target.value })}
             className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm"
           >
-            {CATEGORIES.map((c) => (
-              <option key={c.value} value={c.value}>
-                {c.label}
+            {types.map((t) => (
+              <option key={t.slug} value={t.slug}>
+                {t.label}
               </option>
             ))}
           </select>
