@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPublicSupabase } from "@/lib/supabase";
+import { sendContactNotification } from "@/lib/email";
+import type { SiteSettings } from "@/lib/types";
+
+const DEFAULT_NOTIFICATION_EMAIL = "contact@guittardtp.fr";
 
 export const dynamic = "force-dynamic";
 
@@ -28,8 +32,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Téléphone invalide." }, { status: 400 });
   }
 
+  const supabase = getPublicSupabase();
+
   try {
-    const supabase = getPublicSupabase();
     const { error } = await supabase.from("contact_messages").insert({
       nom,
       email,
@@ -37,7 +42,6 @@ export async function POST(req: NextRequest) {
       message,
     });
     if (error) throw error;
-    return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("contact insert error", err);
     return NextResponse.json(
@@ -45,4 +49,34 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+
+  try {
+    const { data: settings } = await supabase
+      .from("site_settings")
+      .select("email")
+      .eq("id", 1)
+      .single();
+    const notificationEmail =
+      (settings as Pick<SiteSettings, "email"> | null)?.email ||
+      DEFAULT_NOTIFICATION_EMAIL;
+
+    await sendContactNotification({
+      to: notificationEmail,
+      nom,
+      email,
+      telephone: telephone ? String(telephone) : null,
+      message,
+    });
+  } catch (err) {
+    console.error("contact notification email error", err);
+    return NextResponse.json(
+      {
+        error:
+          "Votre message a bien été enregistré, mais l'email de notification n'a pas pu être envoyé. Nous vous recontacterons dès que possible.",
+      },
+      { status: 502 }
+    );
+  }
+
+  return NextResponse.json({ ok: true });
 }
