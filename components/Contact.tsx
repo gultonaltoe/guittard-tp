@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { CheckCircle2, X } from "lucide-react";
 import type { SiteSettings } from "@/lib/types";
 
 export default function Contact({ settings }: { settings: SiteSettings }) {
@@ -8,7 +9,20 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
     "idle"
   );
   const [errorMsg, setErrorMsg] = useState("");
+  const [toastOpen, setToastOpen] = useState(false);
+  const toastTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const telHref = `tel:${settings.telephone.replace(/\s+/g, "")}`;
+
+  useEffect(() => {
+    return () => {
+      if (toastTimeout.current) clearTimeout(toastTimeout.current);
+    };
+  }, []);
+
+  function closeToast() {
+    setToastOpen(false);
+    if (toastTimeout.current) clearTimeout(toastTimeout.current);
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -35,6 +49,9 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
       }
       setStatus("ok");
       form.reset();
+      setToastOpen(true);
+      if (toastTimeout.current) clearTimeout(toastTimeout.current);
+      toastTimeout.current = setTimeout(() => setToastOpen(false), 5000);
     } catch (err) {
       setStatus("error");
       setErrorMsg(err instanceof Error ? err.message : "Erreur inattendue.");
@@ -43,6 +60,26 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
 
   return (
     <section id="contact" className="mx-auto max-w-6xl px-4 py-10 md:py-20">
+      {toastOpen && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed inset-x-4 top-4 z-50 mx-auto flex max-w-md items-center gap-3 rounded-lg bg-green-600 px-4 py-3 text-white shadow-lg sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2"
+        >
+          <CheckCircle2 className="h-6 w-6 shrink-0" aria-hidden="true" />
+          <p className="text-sm font-medium">
+            Votre message a bien été envoyé ! Nous vous recontacterons rapidement.
+          </p>
+          <button
+            type="button"
+            onClick={closeToast}
+            aria-label="Fermer"
+            className="ml-auto shrink-0 rounded p-1 hover:bg-white/20"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      )}
       <h2 className="text-2xl font-bold text-[#464746] sm:text-3xl">
         Nous contacter
       </h2>
@@ -135,11 +172,6 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
           >
             {status === "loading" ? "Envoi..." : "Envoyer ma demande"}
           </button>
-          {status === "ok" && (
-            <p className="text-sm text-green-700">
-              Votre message a bien été envoyé, merci !
-            </p>
-          )}
           {status === "error" && (
             <p className="text-sm text-red-700">{errorMsg}</p>
           )}
