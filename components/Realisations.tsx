@@ -20,9 +20,9 @@ export default function Realisations({
     ? (filtreInitial as string)
     : "toutes";
   const [filtre, setFiltre] = useState<string>(filtreInitialValide);
-  // Une navigation client-side (ex. depuis une carte Prestations) change
-  // filtreInitial sans démonter ce composant : on resynchronise l'état local
-  // pendant le rendu (cf. "Adjusting state when a prop changes" des docs React).
+  // Une navigation client-side (ex. via le logo/nav du Header, en next/link)
+  // change filtreInitial sans démonter ce composant : on resynchronise l'état
+  // local pendant le rendu (cf. "Adjusting state when a prop changes" des docs React).
   const [filtreInitialSuivi, setFiltreInitialSuivi] = useState(filtreInitialValide);
   if (filtreInitialValide !== filtreInitialSuivi) {
     setFiltreInitialSuivi(filtreInitialValide);
