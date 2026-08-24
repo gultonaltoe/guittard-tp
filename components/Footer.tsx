@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { SiteSettings } from "@/lib/types";
 
 export default function Footer({ settings }: { settings: SiteSettings }) {
@@ -19,15 +20,15 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
           </p>
         </div>
         <nav className="flex gap-4 text-sm text-white">
-          <a href="#prestations" className="hover:text-[#e9cc1b]">
+          <Link href="/#prestations" className="hover:text-[#e9cc1b]">
             Prestations
-          </a>
-          <a href="#realisations" className="hover:text-[#e9cc1b]">
+          </Link>
+          <Link href="/#realisations" className="hover:text-[#e9cc1b]">
             Réalisations
-          </a>
-          <a href="#contact" className="hover:text-[#e9cc1b]">
+          </Link>
+          <Link href="/#contact" className="hover:text-[#e9cc1b]">
             Contact
-          </a>
+          </Link>
         </nav>
       </div>
       <p className="mx-auto mt-6 max-w-6xl px-4 text-xs text-neutral-300">

@@ -1,10 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
-        <a href="#accueil" className="flex min-w-0 items-center gap-3 leading-none">
+        <Link href="/#accueil" className="flex min-w-0 items-center gap-3 leading-none">
           <Image
             src="/logo-guittard-badge.png"
             alt=""
@@ -16,25 +17,25 @@ export default function Header() {
           <span className="truncate text-[15px] font-bold leading-none tracking-wide text-[#464746]">
             GUITTARD TP &amp; TERRASSEMENT
           </span>
-        </a>
+        </Link>
         <nav className="hidden items-center gap-8 text-sm font-medium leading-none text-neutral-700 md:flex">
-          <a href="#prestations" className="leading-none hover:text-[#464746]">
+          <Link href="/#prestations" className="leading-none hover:text-[#464746]">
             Prestations
-          </a>
-          <a href="#realisations" className="leading-none hover:text-[#464746]">
+          </Link>
+          <Link href="/#realisations" className="leading-none hover:text-[#464746]">
             Réalisations
-          </a>
-          <a href="#contact" className="leading-none hover:text-[#464746]">
+          </Link>
+          <Link href="/#contact" className="leading-none hover:text-[#464746]">
             Contact
-          </a>
+          </Link>
         </nav>
-        <a
-          href="#contact"
+        <Link
+          href="/#contact"
           className="shrink-0 rounded bg-[#e9cc1b] px-4 py-2 text-sm font-semibold leading-none text-[#464746] hover:bg-[#d8bd18]"
         >
           <span className="sm:hidden">Devis</span>
           <span className="hidden sm:inline">Devis gratuit</span>
-        </a>
+        </Link>
       </div>
     </header>
   );

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Shovel, Route, Fence, Trees } from "lucide-react";
 
 const PRESTATIONS: {
@@ -53,7 +54,7 @@ export default function Prestations() {
       </p>
       <div className="mt-6 grid gap-4 sm:grid-cols-2 sm:gap-6 md:mt-10 lg:grid-cols-4">
         {PRESTATIONS.map((p) => (
-          <a
+          <Link
             key={p.titre}
             href={`/?type=${p.categorie}#realisations`}
             className="block rounded-lg border border-neutral-200 p-4 transition-all duration-150 hover:-translate-y-0.5 hover:border-[#e9cc1b] hover:shadow-md sm:p-6"
@@ -70,7 +71,7 @@ export default function Prestations() {
             <p className="mt-1.5 text-sm text-neutral-600 sm:mt-3">
               {p.description}
             </p>
-          </a>
+          </Link>
         ))}
       </div>
     </section>

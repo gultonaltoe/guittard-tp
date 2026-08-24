@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import type { Realisation, TypeRealisation } from "@/lib/types";
 import Lightbox from "@/components/Lightbox";
 
@@ -19,11 +20,28 @@ export default function Realisations({
     ? (filtreInitial as string)
     : "toutes";
   const [filtre, setFiltre] = useState<string>(filtreInitialValide);
+  // Une navigation client-side (ex. depuis une carte Prestations) change
+  // filtreInitial sans démonter ce composant : on resynchronise l'état local
+  // pendant le rendu (cf. "Adjusting state when a prop changes" des docs React).
+  const [filtreInitialSuivi, setFiltreInitialSuivi] = useState(filtreInitialValide);
+  if (filtreInitialValide !== filtreInitialSuivi) {
+    setFiltreInitialSuivi(filtreInitialValide);
+    setFiltre(filtreInitialValide);
+  }
   const [lightbox, setLightbox] = useState<{
     photos: string[];
     index: number;
     titre: string;
   } | null>(null);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  function selectionnerFiltre(slug: string) {
+    setFiltre(slug);
+    router.replace(slug === "toutes" ? pathname : `${pathname}?type=${slug}`, {
+      scroll: false,
+    });
+  }
 
   const categoriesPresentes = types.filter(
     (t) => realisations.some((r) => r.categorie === t.slug) || t.slug === filtre
@@ -52,7 +70,7 @@ export default function Realisations({
           <>
             <div className="mt-8 flex flex-wrap gap-2">
               <button
-                onClick={() => setFiltre("toutes")}
+                onClick={() => selectionnerFiltre("toutes")}
                 className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
                   filtre === "toutes"
                     ? "bg-[#464746] text-white"
@@ -64,7 +82,7 @@ export default function Realisations({
               {categoriesPresentes.map((t) => (
                 <button
                   key={t.slug}
-                  onClick={() => setFiltre(t.slug)}
+                  onClick={() => selectionnerFiltre(t.slug)}
                   className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
                     filtre === t.slug
                       ? "bg-[#464746] text-white"

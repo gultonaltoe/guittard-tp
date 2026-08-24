@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero({ telephone }: { telephone: string }) {
   const telHref = `tel:${telephone.replace(/\s+/g, "")}`;
@@ -23,12 +24,12 @@ export default function Hero({ telephone }: { telephone: string }) {
           Travaux publics, terrassements, aménagements extérieurs et VRD
         </h1>
         <div className="mt-8 flex flex-wrap gap-3">
-          <a
-            href="#contact"
+          <Link
+            href="/#contact"
             className="rounded bg-[#e9cc1b] px-6 py-3 text-sm font-semibold text-[#464746] hover:brightness-95"
           >
             Nous contacter
-          </a>
+          </Link>
           <a
             href={telHref}
             className="rounded border border-white/30 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
