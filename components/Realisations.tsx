@@ -153,14 +153,7 @@ export default function Realisations({
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
                       <div className="absolute inset-x-0 bottom-0 p-4 text-left">
-                        <h3
-                          // Reste sous 20px : au-delà, macOS bascule San Francisco de
-                          // l'optique "Text" à "Display" et les deux tailles de tuile
-                          // n'affichent plus la même police malgré le même font-family.
-                          className={`font-bold italic text-white drop-shadow-sm ${
-                            grande ? "text-lg" : "text-sm sm:text-base"
-                          }`}
-                        >
+                        <h3 className="text-sm font-bold italic text-white drop-shadow-sm sm:text-base">
                           {r.titre}
                         </h3>
                         {typeLabel && (
