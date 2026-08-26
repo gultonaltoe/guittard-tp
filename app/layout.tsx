@@ -23,12 +23,21 @@ export const metadata: Metadata = {
     siteName: "Guittard TP & Terrassement",
     locale: "fr_FR",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Guittard TP & Terrassement",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Guittard TP & Terrassement",
     description:
       "Terrassement, VRD, aménagements extérieurs et défrichage dans le Haut-Rhin.",
+    images: ["/og-image.png"],
   },
   robots: "index, follow",
 };
