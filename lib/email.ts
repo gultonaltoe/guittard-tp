@@ -62,3 +62,46 @@ export async function sendContactNotification(
     throw new Error(`Resend error: ${error.name} — ${error.message}`);
   }
 }
+
+export interface ReviewNotificationInput {
+  to: string;
+  authorName: string;
+  authorCity: string | null;
+  rating: number;
+  text: string;
+}
+
+export async function sendReviewNotification(
+  input: ReviewNotificationInput
+): Promise<void> {
+  const from = process.env.RESEND_FROM_EMAIL || "Site Guittard TP <onboarding@resend.dev>";
+  const resend = getResend();
+
+  const { error } = await resend.emails.send({
+    from,
+    to: input.to,
+    subject: `Nouvel avis client en attente — ${input.authorName}`,
+    text: [
+      `Auteur: ${input.authorName}${input.authorCity ? ` — ${input.authorCity}` : ""}`,
+      `Note: ${input.rating}/5`,
+      "",
+      "Avis:",
+      input.text,
+      "",
+      "Cet avis est en attente de validation dans l'espace admin.",
+    ].join("\n"),
+    html: `
+      <p><strong>Auteur:</strong> ${escapeHtml(input.authorName)}${
+        input.authorCity ? ` — ${escapeHtml(input.authorCity)}` : ""
+      }</p>
+      <p><strong>Note:</strong> ${input.rating}/5</p>
+      <p><strong>Avis:</strong></p>
+      <p>${escapeHtml(input.text).replace(/\n/g, "<br>")}</p>
+      <p>Cet avis est en attente de validation dans l'espace admin.</p>
+    `,
+  });
+
+  if (error) {
+    throw new Error(`Resend error: ${error.name} — ${error.message}`);
+  }
+}

@@ -11,6 +11,8 @@ import {
   FileText,
   MapPin,
   BarChart3,
+  Handshake,
+  Star,
   LogOut,
 } from "lucide-react";
 import { getBrowserSupabase } from "@/lib/supabase/client";
@@ -19,6 +21,8 @@ const NAV_ITEMS = [
   { href: "/admin/stats", label: "Stats", icon: BarChart3 },
   { href: "/admin/realisations", label: "Réalisations", icon: HardHat },
   { href: "/admin/types-realisation", label: "Types de réalisations", icon: Tags },
+  { href: "/admin/avis", label: "Avis clients", icon: Star },
+  { href: "/admin/partenaires", label: "Partenaires", icon: Handshake },
   { href: "/admin/messages", label: "Messages", icon: Mail },
   { href: "/admin/contenu", label: "Textes du site", icon: FileText },
   { href: "/admin/coordonnees", label: "Coordonnées", icon: MapPin },

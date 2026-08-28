@@ -30,10 +30,36 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   }
   const body = await req.json().catch(() => ({}));
-  const allowed = ["telephone", "email", "adresse", "zone_intervention"];
+  const allowed = [
+    "telephone",
+    "email",
+    "adresse",
+    "zone_intervention",
+    "partners_section_enabled",
+    "avis_section_enabled",
+  ];
   const update: Record<string, unknown> = {};
   for (const key of allowed) {
     if (key in body) update[key] = body[key];
+  }
+
+  if (
+    "partners_section_enabled" in update &&
+    typeof update.partners_section_enabled !== "boolean"
+  ) {
+    return NextResponse.json(
+      { error: "Valeur invalide pour l'affichage des partenaires." },
+      { status: 400 }
+    );
+  }
+  if (
+    "avis_section_enabled" in update &&
+    typeof update.avis_section_enabled !== "boolean"
+  ) {
+    return NextResponse.json(
+      { error: "Valeur invalide pour l'affichage des avis." },
+      { status: 400 }
+    );
   }
 
   if ("email" in update) {

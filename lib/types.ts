@@ -22,7 +22,33 @@ export interface SiteSettings {
   email: string;
   adresse: string;
   zone_intervention: string;
+  partners_section_enabled: boolean;
+  avis_section_enabled: boolean;
   updated_at: string;
+}
+
+export interface Partner {
+  id: string;
+  name: string;
+  logo: string | null;
+  website_url: string | null;
+  description: string | null;
+  position: number;
+  status: "publie" | "masque";
+  created_at: string;
+}
+
+export interface Review {
+  id: string;
+  author_name: string;
+  author_city: string | null;
+  rating: number;
+  service_type: string | null;
+  text: string;
+  source: "manuel" | "formulaire";
+  status: "en_attente" | "publie" | "masque";
+  created_at: string;
+  published_at: string | null;
 }
 
 export interface ContactMessage {
