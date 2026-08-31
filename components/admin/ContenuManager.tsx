@@ -3,6 +3,25 @@
 import { useEffect, useState } from "react";
 import type { ContenuSite } from "@/lib/types";
 
+// Certains blocs de contenu générique (titre + contenu par "cle") portent en
+// réalité des champs à usage plus précis : ce mapping affine seulement leur
+// libellé et leur nom de bloc dans l'admin, sans changer le schéma générique.
+const BLOCK_TITLES: Record<string, string> = {
+  notre_histoire: "Notre histoire",
+  notre_histoire_cta: "Notre histoire — Appel à l'action",
+};
+
+const FIELD_LABELS: Record<string, { titre: string; contenu: string }> = {
+  notre_histoire: {
+    titre: "Titre",
+    contenu: "Corps de texte (séparez les paragraphes par une ligne vide)",
+  },
+  notre_histoire_cta: {
+    titre: "Texte de l'appel à l'action",
+    contenu: "Texte surligné (affiché en jaune juste après)",
+  },
+};
+
 export default function ContenuManager() {
   const [items, setItems] = useState<ContenuSite[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,6 +75,7 @@ function ContenuBlockForm({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
+  const labels = FIELD_LABELS[item.cle] ?? { titre: "Titre", contenu: "Contenu" };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -84,10 +104,12 @@ function ContenuBlockForm({
       onSubmit={handleSubmit}
       className="rounded-lg bg-white p-6 ring-1 ring-neutral-200"
     >
-      <h2 className="font-semibold text-[#464746]">{item.cle}</h2>
+      <h2 className="font-semibold text-[#464746]">
+        {BLOCK_TITLES[item.cle] ?? item.cle}
+      </h2>
       <div className="mt-4 space-y-4">
         <div>
-          <label className="block text-sm font-medium text-neutral-700">Titre</label>
+          <label className="block text-sm font-medium text-neutral-700">{labels.titre}</label>
           <input
             value={titre}
             onChange={(e) => setTitre(e.target.value)}
@@ -95,11 +117,11 @@ function ContenuBlockForm({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-neutral-700">Contenu</label>
+          <label className="block text-sm font-medium text-neutral-700">{labels.contenu}</label>
           <textarea
             value={contenu}
             onChange={(e) => setContenu(e.target.value)}
-            rows={5}
+            rows={item.cle === "notre_histoire_cta" ? 2 : 5}
             className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm"
           />
         </div>

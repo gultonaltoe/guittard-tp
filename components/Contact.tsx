@@ -59,7 +59,7 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
   }
 
   return (
-    <section id="contact" className="mx-auto max-w-6xl px-4 py-10 md:py-20">
+    <section id="contact" className="mx-auto max-w-6xl px-4 py-10 md:py-16">
       {toastOpen && (
         <div
           role="status"

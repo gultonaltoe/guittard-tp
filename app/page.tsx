@@ -33,9 +33,14 @@ const DEFAULT_SETTINGS: SiteSettings = {
 };
 
 const DEFAULT_NOTRE_HISTOIRE = {
-  titre: "Notre histoire",
+  titre: "L'expérience du terrain, l'énergie d'un nouveau projet.",
   contenu:
-    "[Texte à personnaliser par Vincent, son parcours, la création de l'entreprise, ses valeurs]",
+    "Fort de 21 années d'expérience, je mets mon savoir-faire, ma réactivité et mon engagement au service de vos projets : terrassement, VRD, aménagement extérieur, défrichage, abattage, démolition, enrochement, plateformes, fondations spéciales, création de puits, curages divers et bien plus encore.\n\nJ'aborde chaque chantier avec sérieux, précision et dynamisme. Particuliers, entreprises ou collectivités, je m'adapte aux besoins de chaque client avec l'envie d'innover et de relever vos défis.",
+};
+
+const DEFAULT_NOTRE_HISTOIRE_CTA = {
+  texte: "Un projet ? Un terrain à préparer ?",
+  surligne: "Parlons-en.",
 };
 
 async function getData() {
@@ -97,6 +102,7 @@ export default async function HomePage({
 }) {
   const { realisations, settings, contenus, types, partners, reviews } = await getData();
   const notreHistoire = contenus.find((c) => c.cle === "notre_histoire");
+  const notreHistoireCta = contenus.find((c) => c.cle === "notre_histoire_cta");
   const { type } = await searchParams;
   const filtreInitial = typeof type === "string" ? type : undefined;
   const afficherPartenaires = settings.partners_section_enabled && partners.length > 0;
@@ -111,6 +117,8 @@ export default async function HomePage({
           <NotreHistoire
             titre={notreHistoire?.titre ?? DEFAULT_NOTRE_HISTOIRE.titre}
             contenu={notreHistoire?.contenu ?? DEFAULT_NOTRE_HISTOIRE.contenu}
+            ctaTexte={notreHistoireCta?.titre ?? DEFAULT_NOTRE_HISTOIRE_CTA.texte}
+            ctaSurligne={notreHistoireCta?.contenu ?? DEFAULT_NOTRE_HISTOIRE_CTA.surligne}
           />
         </section>
         <Realisations

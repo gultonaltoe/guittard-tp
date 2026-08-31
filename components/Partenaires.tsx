@@ -2,7 +2,7 @@ import type { Partner } from "@/lib/types";
 
 export default function Partenaires({ partners }: { partners: Partner[] }) {
   return (
-    <section id="partenaires" className="mx-auto max-w-6xl px-4 py-10 md:py-20">
+    <section id="partenaires" className="mx-auto max-w-6xl px-4 py-10 md:py-16">
       <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#464746]">
         <span className="h-[3px] w-4 bg-[#e9cc1b]" aria-hidden="true" />
         Nos partenaires locaux

@@ -43,7 +43,7 @@ const PRESTATIONS: {
 
 export default function Prestations() {
   return (
-    <section id="prestations" className="mx-auto max-w-6xl px-4 py-10 md:py-20">
+    <section id="prestations" className="mx-auto max-w-6xl px-4 py-10 md:py-16">
       <h2 className="text-2xl font-bold text-[#464746] sm:text-3xl">
         Nos prestations
       </h2>

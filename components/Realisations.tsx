@@ -80,7 +80,7 @@ export default function Realisations({
       : realisations.filter((r) => r.categorie === filtre);
 
   return (
-    <section id="realisations" className="bg-[#464746] py-10 md:py-20">
+    <section id="realisations" className="bg-[#464746] py-10 md:py-16">
       <div className="mx-auto max-w-6xl px-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-[#e9cc1b]">

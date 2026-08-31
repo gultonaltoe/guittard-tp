@@ -17,7 +17,7 @@ export default function Avis({
   const recentes = reviews.slice(0, APERCU_TAILLE);
 
   return (
-    <section id="avis" className="mx-auto max-w-6xl px-4 py-10 md:py-20">
+    <section id="avis" className="mx-auto max-w-6xl px-4 py-10 md:py-16">
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div className="max-w-2xl">
           <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#464746]">
