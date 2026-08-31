@@ -1,6 +1,31 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import { getPublicSupabase } from "@/lib/supabase";
+import type { SiteSettings } from "@/lib/types";
 import "./globals.css";
+
+// Le JSON-LD (areaServed) interroge Supabase à chaque requête : pas de rendu
+// statique, pour rester à jour si Vincent modifie la zone d'intervention.
+export const dynamic = "force-dynamic";
+
+const DEFAULT_ZONE_INTERVENTION = "Haut-Rhin et environs";
+
+async function getZoneIntervention(): Promise<string> {
+  try {
+    const supabase = getPublicSupabase();
+    const { data } = await supabase
+      .from("site_settings")
+      .select("zone_intervention")
+      .eq("id", 1)
+      .single();
+    return (
+      (data as Pick<SiteSettings, "zone_intervention"> | null)?.zone_intervention ??
+      DEFAULT_ZONE_INTERVENTION
+    );
+  } catch {
+    return DEFAULT_ZONE_INTERVENTION;
+  }
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://guittardtp.fr"),
@@ -42,12 +67,28 @@ export const metadata: Metadata = {
   robots: "index, follow",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const zoneIntervention = await getZoneIntervention();
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "GeneralContractor",
+    name: "Guittard TP & Terrassement",
+    telephone: "+33666822418",
+    url: "https://guittardtp.fr",
+    description:
+      "Entreprise de terrassement, VRD, aménagements extérieurs et défrichage à Sternenberg (Haut-Rhin).",
+    areaServed: zoneIntervention,
+  };
+
   return (
     <html lang="fr">
       <body className="antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         {children}
         <Analytics />
       </body>
