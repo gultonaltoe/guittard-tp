@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import Link from "next/link";
 import { CheckCircle2, X } from "lucide-react";
 import type { SiteSettings } from "@/lib/types";
 
@@ -175,6 +176,14 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
           {status === "error" && (
             <p className="text-sm text-red-700">{errorMsg}</p>
           )}
+          <p className="text-xs text-neutral-500">
+            Vos données sont utilisées uniquement pour traiter votre demande. En savoir
+            plus :{" "}
+            <Link href="/politique-confidentialite" className="underline hover:text-[#464746]">
+              Politique de confidentialité
+            </Link>
+            .
+          </p>
         </form>
       </div>
     </section>

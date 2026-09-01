@@ -20,6 +20,27 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Cookies & suivi Google Ads
+
+Le site affiche un bandeau de consentement cookies (`components/CookieConsent.tsx`) avant
+de charger tout script non essentiel. Le tag de conversion Google Ads
+(`components/GoogleAdsTag.tsx`) ne se charge que si l'utilisateur a cliqué "Accepter".
+
+Le compte Google Ads n'étant pas encore finalisé, l'ID de conversion n'est pas encore
+renseigné. Une fois disponible (format `AW-XXXXXXXXX`), il suffit de le coller dans la
+variable d'environnement `NEXT_PUBLIC_GOOGLE_ADS_ID` (`.env.local` en local, variables
+d'environnement du projet sur Vercel en production) — aucune autre modification n'est
+nécessaire, la logique de consentement est déjà en place.
+
+Les textes des pages `/mentions-legales` et `/politique-confidentialite` sont éditables
+depuis Admin > Contenu (table `contenu_site`, clés `mentions_legales` et
+`politique_confidentialite`), avec une mini-syntaxe (titres `## `, listes `- `, tableaux,
+`**gras**`, `[lien](/url)`, jeton `{{gerer-cookies}}` — voir `lib/renderLegalMarkdown.tsx`).
+Le texte par défaut vit dans `lib/legalContentDefaults.ts` et sert de repli tant qu'aucune
+ligne n'existe en base (créée une première fois par `scripts/seed-legal-content.mjs`) ; ce
+texte a une valeur juridique, donc toute modification depuis l'admin doit être relue avant
+publication.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

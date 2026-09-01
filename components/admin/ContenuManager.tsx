@@ -9,6 +9,8 @@ import type { ContenuSite } from "@/lib/types";
 const BLOCK_TITLES: Record<string, string> = {
   notre_histoire: "Notre histoire",
   notre_histoire_cta: "Notre histoire — Appel à l'action",
+  mentions_legales: "Mentions légales",
+  politique_confidentialite: "Politique de confidentialité",
 };
 
 const FIELD_LABELS: Record<string, { titre: string; contenu: string }> = {
@@ -20,7 +22,20 @@ const FIELD_LABELS: Record<string, { titre: string; contenu: string }> = {
     titre: "Texte de l'appel à l'action",
     contenu: "Texte surligné (affiché en jaune juste après)",
   },
+  mentions_legales: { titre: "", contenu: "Texte de la page" },
+  politique_confidentialite: { titre: "", contenu: "Texte de la page" },
 };
+
+// Ces deux blocs n'ont pas de champ "Titre" (le titre de page reste fixe dans
+// le code) et utilisent une mini-syntaxe au lieu de simples paragraphes.
+const LEGAL_BLOCKS = new Set(["mentions_legales", "politique_confidentialite"]);
+
+const LEGAL_CONTENT_HELP =
+  "Syntaxe : \"## Titre\" pour un sous-titre, \"- \" en début de ligne pour une liste, " +
+  "\"**texte**\" pour du gras, \"[texte](/lien)\" pour un lien, une ligne vide entre les " +
+  "paragraphes. Pour un tableau, une ligne \"| Col A | Col B |\" suivie de \"| --- | --- |\" " +
+  "puis des lignes de données. Le jeton {{gerer-cookies}} insère le bouton \"Gérer mes " +
+  "cookies\" qui rouvre le bandeau de consentement.";
 
 export default function ContenuManager() {
   const [items, setItems] = useState<ContenuSite[]>([]);
@@ -76,6 +91,7 @@ function ContenuBlockForm({
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
   const labels = FIELD_LABELS[item.cle] ?? { titre: "Titre", contenu: "Contenu" };
+  const isLegal = LEGAL_BLOCKS.has(item.cle);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -107,22 +123,32 @@ function ContenuBlockForm({
       <h2 className="font-semibold text-[#464746]">
         {BLOCK_TITLES[item.cle] ?? item.cle}
       </h2>
+      {isLegal && (
+        <p className="mt-2 rounded border border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+          Texte à valeur juridique (RGPD, mentions légales) — vérifiez sa conformité avant
+          d&apos;enregistrer. {LEGAL_CONTENT_HELP}
+        </p>
+      )}
       <div className="mt-4 space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-neutral-700">{labels.titre}</label>
-          <input
-            value={titre}
-            onChange={(e) => setTitre(e.target.value)}
-            className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm"
-          />
-        </div>
+        {!isLegal && (
+          <div>
+            <label className="block text-sm font-medium text-neutral-700">{labels.titre}</label>
+            <input
+              value={titre}
+              onChange={(e) => setTitre(e.target.value)}
+              className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm"
+            />
+          </div>
+        )}
         <div>
           <label className="block text-sm font-medium text-neutral-700">{labels.contenu}</label>
           <textarea
             value={contenu}
             onChange={(e) => setContenu(e.target.value)}
-            rows={item.cle === "notre_histoire_cta" ? 2 : 5}
-            className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm"
+            rows={isLegal ? 24 : item.cle === "notre_histoire_cta" ? 2 : 5}
+            className={`mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm ${
+              isLegal ? "font-mono text-xs" : ""
+            }`}
           />
         </div>
       </div>

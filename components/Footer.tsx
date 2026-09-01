@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import type { SiteSettings } from "@/lib/types";
+import { openCookiePreferences } from "@/lib/cookieConsent";
 
 export default function Footer({ settings }: { settings: SiteSettings }) {
   return (
@@ -19,7 +22,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
             {settings.telephone} · {settings.email}
           </p>
         </div>
-        <nav className="flex gap-4 text-sm text-white">
+        <nav className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-white">
           <Link href="/#prestations" className="hover:text-[#e9cc1b]">
             Prestations
           </Link>
@@ -29,6 +32,19 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
           <Link href="/#contact" className="hover:text-[#e9cc1b]">
             Contact
           </Link>
+          <Link href="/mentions-legales" className="hover:text-[#e9cc1b]">
+            Mentions légales
+          </Link>
+          <Link href="/politique-confidentialite" className="hover:text-[#e9cc1b]">
+            Politique de confidentialité
+          </Link>
+          <button
+            type="button"
+            onClick={openCookiePreferences}
+            className="underline-offset-2 hover:text-[#e9cc1b] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#e9cc1b]"
+          >
+            Gérer mes cookies
+          </button>
         </nav>
       </div>
       <p className="mx-auto mt-6 max-w-6xl px-4 text-xs text-neutral-300">

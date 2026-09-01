@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import Link from "next/link";
 import { CheckCircle2, X } from "lucide-react";
 import type { TypeRealisation } from "@/lib/types";
 import StarRatingInput from "./StarRatingInput";
@@ -184,6 +185,14 @@ export default function AvisForm({ types }: { types: TypeRealisation[] }) {
             {errorMsg}
           </p>
         )}
+        <p className="text-center text-xs text-neutral-500">
+          Vos données sont utilisées uniquement pour traiter votre demande. En savoir
+          plus :{" "}
+          <Link href="/politique-confidentialite" className="underline hover:text-[#464746]">
+            Politique de confidentialité
+          </Link>
+          .
+        </p>
       </form>
     </div>
   );

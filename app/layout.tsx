@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { getPublicSupabase } from "@/lib/supabase";
 import type { SiteSettings } from "@/lib/types";
+import CookieConsent from "@/components/CookieConsent";
+import GoogleAdsTag from "@/components/GoogleAdsTag";
 import "./globals.css";
 
 // Le JSON-LD (areaServed) interroge Supabase à chaque requête : pas de rendu
@@ -90,6 +92,8 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         {children}
+        <CookieConsent />
+        <GoogleAdsTag />
         <Analytics />
       </body>
     </html>
