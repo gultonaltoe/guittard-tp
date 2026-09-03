@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
 import { getPublicSupabase } from "@/lib/supabase";
 import type { SiteSettings } from "@/lib/types";
 import CookieConsent from "@/components/CookieConsent";
@@ -94,7 +93,6 @@ export default async function RootLayout({
         {children}
         <CookieConsent />
         <GoogleAdsTag />
-        <Analytics />
       </body>
     </html>
   );

@@ -198,7 +198,11 @@ export default function StatsPanel() {
                     <p className="text-3xl font-bold leading-none text-[#464746]">
                       {nombre(traffic.visitors)}
                     </p>
-                    <p className="mt-1 text-sm text-neutral-500">Visiteurs</p>
+                    <p className="mt-1 text-sm text-neutral-500">Visites</p>
+                    <p className="mt-1 text-xs text-neutral-400">
+                      Cumul des passages sur la période, une même personne peut être comptée
+                      plusieurs fois si elle revient un autre jour.
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 rounded-xl bg-white p-6 ring-1 ring-neutral-200">
