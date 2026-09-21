@@ -1,8 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Hero({ telephone }: { telephone: string }) {
   const telHref = `tel:${telephone.replace(/\s+/g, "")}`;
+
+  function handlePhoneClick() {
+    // TODO: appeler gtag('event', 'conversion', {send_to: 'AW-18414097319/<LABEL_A_RENSEIGNER>'}) une fois le libellé de conversion créé dans Google Ads
+  }
   return (
     <section
       id="accueil"
@@ -32,6 +38,7 @@ export default function Hero({ telephone }: { telephone: string }) {
           </Link>
           <a
             href={telHref}
+            onClick={handlePhoneClick}
             className="rounded border border-white/30 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
           >
             {telephone}

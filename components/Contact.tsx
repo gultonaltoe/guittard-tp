@@ -14,6 +14,10 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
   const toastTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const telHref = `tel:${settings.telephone.replace(/\s+/g, "")}`;
 
+  function handlePhoneClick() {
+    // TODO: appeler gtag('event', 'conversion', {send_to: 'AW-18414097319/<LABEL_A_RENSEIGNER>'}) une fois le libellé de conversion créé dans Google Ads
+  }
+
   useEffect(() => {
     return () => {
       if (toastTimeout.current) clearTimeout(toastTimeout.current);
@@ -49,6 +53,7 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
         throw new Error(body?.error ?? "Erreur lors de l'envoi.");
       }
       setStatus("ok");
+      // TODO: appeler gtag('event', 'conversion', {send_to: 'AW-18414097319/<LABEL_A_RENSEIGNER>'}) une fois le libellé de conversion créé dans Google Ads
       form.reset();
       setToastOpen(true);
       if (toastTimeout.current) clearTimeout(toastTimeout.current);
@@ -93,7 +98,7 @@ export default function Contact({ settings }: { settings: SiteSettings }) {
         <ul className="space-y-3 text-sm text-neutral-700">
           <li>
             <span className="font-semibold text-[#464746]">Téléphone : </span>
-            <a href={telHref} className="hover:text-[#b8901f]">
+            <a href={telHref} onClick={handlePhoneClick} className="hover:text-[#b8901f]">
               {settings.telephone}
             </a>
           </li>
