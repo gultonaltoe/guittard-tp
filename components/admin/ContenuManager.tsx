@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { ContenuSite } from "@/lib/types";
+import { readApiJson } from "@/lib/adminApi";
 
 // Certains blocs de contenu générique (titre + contenu par "cle") portent en
 // réalité des champs à usage plus précis : ce mapping affine seulement leur
@@ -47,8 +48,7 @@ export default function ContenuManager() {
     setError("");
     try {
       const res = await fetch("/api/admin/contenu");
-      const body = await res.json();
-      if (!res.ok) throw new Error(body?.error ?? "Erreur de chargement.");
+      const body = await readApiJson(res, "Erreur de chargement.");
       setItems(body.contenus ?? []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inattendue.");
@@ -104,8 +104,7 @@ function ContenuBlockForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cle: item.cle, titre, contenu }),
       });
-      const body = await res.json();
-      if (!res.ok) throw new Error(body?.error ?? "Échec de l'enregistrement.");
+      await readApiJson(res, "Échec de l'enregistrement.");
       setSaved(true);
       await onSaved();
     } catch (err) {

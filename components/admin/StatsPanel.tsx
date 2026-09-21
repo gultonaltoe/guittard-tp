@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Users, Eye, FileText, Link2, MessageSquare } from "lucide-react";
+import { readApiJson } from "@/lib/adminApi";
 
 type Period = 7 | 30 | 90;
 
@@ -102,8 +103,7 @@ export default function StatsPanel() {
     setTrafficError("");
     try {
       const res = await fetch(`/api/admin/stats/traffic?period=${p}`);
-      const body = await res.json();
-      if (!res.ok) throw new Error(body?.error ?? "Erreur de chargement.");
+      const body = await readApiJson(res, "Erreur de chargement.");
       setTraffic(body.stats);
     } catch (err) {
       setTrafficError(err instanceof Error ? err.message : "Erreur inattendue.");
@@ -117,8 +117,7 @@ export default function StatsPanel() {
     setMessagesError("");
     try {
       const res = await fetch("/api/admin/stats/messages");
-      const body = await res.json();
-      if (!res.ok) throw new Error(body?.error ?? "Erreur de chargement.");
+      const body = await readApiJson(res, "Erreur de chargement.");
       setWeeks(body.weeks ?? []);
       setMessagesTotal(body.total ?? 0);
     } catch (err) {

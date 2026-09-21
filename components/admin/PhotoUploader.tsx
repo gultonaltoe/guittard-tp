@@ -17,6 +17,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { MAX_ORIGINAL_MB, uploadImage } from "@/lib/uploadImage";
 
 const ALLOWED_TYPES = "image/jpeg,image/png,image/webp";
 
@@ -39,22 +40,19 @@ export default function PhotoUploader({
     if (files.length === 0) return;
     setUploading(true);
     setError("");
-    try {
-      const uploaded: string[] = [];
-      for (const file of files) {
-        const fd = new FormData();
-        fd.append("file", file);
-        const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
-        const body = await res.json();
-        if (!res.ok) throw new Error(body?.error ?? "Échec de l'upload.");
-        uploaded.push(body.url);
+    const uploaded: string[] = [];
+    const failures: string[] = [];
+    for (const file of files) {
+      try {
+        uploaded.push(await uploadImage(file));
+      } catch (err) {
+        failures.push(err instanceof Error ? err.message : `Échec de l'envoi de « ${file.name} ».`);
       }
-      onChange([...photos, ...uploaded]);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur d'upload.");
-    } finally {
-      setUploading(false);
     }
+    // Les photos déjà envoyées sont conservées même si une autre a échoué.
+    if (uploaded.length > 0) onChange([...photos, ...uploaded]);
+    setError(failures.join(" "));
+    setUploading(false);
   }
 
   function handleDragEnd(event: DragEndEvent) {
@@ -103,6 +101,9 @@ export default function PhotoUploader({
             e.target.value = "";
           }}
         />
+        <p className="mt-2 text-xs text-neutral-500">
+          JPEG, PNG ou WebP, {MAX_ORIGINAL_MB} Mo max par photo. Elles sont allégées automatiquement.
+        </p>
         {uploading && <p className="mt-2 text-xs text-neutral-500">Envoi en cours...</p>}
       </div>
       {error && <p className="mt-1 text-xs text-red-700">{error}</p>}

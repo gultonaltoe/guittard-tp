@@ -13,6 +13,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove, verticalListSortingStrategy, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { readApiJson } from "@/lib/adminApi";
 import { GripVertical, Pencil, Trash2, ExternalLink } from "lucide-react";
 
 const emptyForm: PartnerFormValues = {
@@ -83,8 +84,7 @@ export default function PartnersManager() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
-    const body = await res.json();
-    if (!res.ok) throw new Error(body?.error ?? "Échec de la création.");
+    await readApiJson(res, "Échec de la création.");
     setCreating(false);
     await load();
   }
@@ -95,8 +95,7 @@ export default function PartnersManager() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
-    const body = await res.json();
-    if (!res.ok) throw new Error(body?.error ?? "Échec de la modification.");
+    await readApiJson(res, "Échec de la modification.");
     setEditingId(null);
     await load();
   }

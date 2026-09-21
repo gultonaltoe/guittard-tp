@@ -5,6 +5,7 @@ import type { Review, SiteSettings, TypeRealisation } from "@/lib/types";
 import ReviewForm, { type ReviewFormValues } from "./ReviewForm";
 import StarRating from "../StarRating";
 import { Check, EyeOff, Pencil, Trash2 } from "lucide-react";
+import { readApiJson } from "@/lib/adminApi";
 
 const emptyForm: ReviewFormValues = {
   author_name: "",
@@ -110,8 +111,7 @@ export default function ReviewsManager() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
-    const body = await res.json();
-    if (!res.ok) throw new Error(body?.error ?? "Échec de la création.");
+    await readApiJson(res, "Échec de la création.");
     setCreating(false);
     await load();
   }
@@ -122,8 +122,7 @@ export default function ReviewsManager() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
-    const body = await res.json();
-    if (!res.ok) throw new Error(body?.error ?? "Échec de la modification.");
+    await readApiJson(res, "Échec de la modification.");
     setEditingId(null);
     await load();
   }

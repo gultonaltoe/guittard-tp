@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Mail, Phone, Trash2 } from "lucide-react";
 import type { ContactMessage } from "@/lib/types";
+import { readApiJson } from "@/lib/adminApi";
 
 type Filtre = "tous" | "non_lu" | "lu";
 
@@ -33,8 +34,7 @@ export default function MessagesInbox() {
     setError("");
     try {
       const res = await fetch("/api/admin/messages");
-      const body = await res.json();
-      if (!res.ok) throw new Error(body?.error ?? "Erreur de chargement.");
+      const body = await readApiJson(res, "Erreur de chargement.");
       setMessages(body.messages ?? []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inattendue.");

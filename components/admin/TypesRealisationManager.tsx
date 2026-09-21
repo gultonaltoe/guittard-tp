@@ -3,6 +3,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import type { TypeRealisation } from "@/lib/types";
 import { Pencil, Trash2, X, Check } from "lucide-react";
+import { readApiJson } from "@/lib/adminApi";
 
 export default function TypesRealisationManager() {
   const [types, setTypes] = useState<TypeRealisation[]>([]);
@@ -43,8 +44,7 @@ export default function TypesRealisationManager() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ label: newLabel }),
       });
-      const body = await res.json();
-      if (!res.ok) throw new Error(body?.error ?? "Échec de la création.");
+      await readApiJson(res, "Échec de la création.");
       setNewLabel("");
       await load();
     } catch (err) {
@@ -62,8 +62,7 @@ export default function TypesRealisationManager() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ label: editingLabel }),
       });
-      const body = await res.json();
-      if (!res.ok) throw new Error(body?.error ?? "Échec de la modification.");
+      await readApiJson(res, "Échec de la modification.");
       setEditingSlug(null);
       await load();
     } catch (err) {

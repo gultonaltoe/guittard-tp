@@ -2,6 +2,7 @@
 
 import { useId, useRef, useState, type FormEvent } from "react";
 import { Upload, X } from "lucide-react";
+import { uploadImage } from "@/lib/uploadImage";
 
 export interface PartnerFormValues {
   name: string;
@@ -35,12 +36,8 @@ export default function PartnerForm({
     setUploading(true);
     setError("");
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
-      const body = await res.json();
-      if (!res.ok) throw new Error(body?.error ?? "Échec de l'upload.");
-      setValues((v) => ({ ...v, logo: body.url }));
+      const url = await uploadImage(file);
+      setValues((v) => ({ ...v, logo: url }));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur d'upload.");
     } finally {

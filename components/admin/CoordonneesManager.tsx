@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { SiteSettings } from "@/lib/types";
+import { readApiJson } from "@/lib/adminApi";
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 const PHONE_RE = /^[0-9 +().-]{6,20}$/;
@@ -27,8 +28,7 @@ export default function CoordonneesManager() {
     setError("");
     try {
       const res = await fetch("/api/admin/site-settings");
-      const body = await res.json();
-      if (!res.ok) throw new Error(body?.error ?? "Erreur de chargement.");
+      const body = await readApiJson(res, "Erreur de chargement.");
       setSettings(body.settings ?? null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inattendue.");
@@ -65,8 +65,7 @@ export default function CoordonneesManager() {
           zone_intervention: settings.zone_intervention,
         }),
       });
-      const body = await res.json();
-      if (!res.ok) throw new Error(body?.error ?? "Échec de l'enregistrement.");
+      const body = await readApiJson(res, "Échec de l'enregistrement.");
       setSettings(body.settings);
       setSaved(true);
     } catch (err) {
