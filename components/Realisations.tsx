@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import type { Realisation, TypeRealisation } from "@/lib/types";
 import Lightbox from "@/components/Lightbox";
@@ -49,6 +49,22 @@ export default function Realisations({
   const router = useRouter();
   const pathname = usePathname();
   const grilleRef = useRef<HTMLDivElement>(null);
+  const [defilementVersGrilleEnAttente, setDefilementVersGrilleEnAttente] =
+    useState(false);
+
+  // Cliquer sur une tuile masque la mosaïque dans le même rendu que le
+  // changement de filtre (cf. mosaiqueVisible plus bas). Si on appelait
+  // scrollIntoView directement dans le handler de clic, il viserait la
+  // position de la grille AVANT que la mosaïque ne se démonte ; la page se
+  // réorganise ensuite sous le scroll "smooth" déjà lancé et atterrit bien
+  // plus bas que prévu (retour Julien du 25/09/2026 : ça scrolle jusqu'à la
+  // section du bas). On attend donc que le rendu avec la mosaïque masquée
+  // soit posé avant de lancer le scroll.
+  useEffect(() => {
+    if (!defilementVersGrilleEnAttente) return;
+    grilleRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setDefilementVersGrilleEnAttente(false);
+  }, [defilementVersGrilleEnAttente]);
 
   function selectionnerFiltre(slug: string) {
     setFiltre(slug);
@@ -59,7 +75,7 @@ export default function Realisations({
 
   function selectionnerFiltreDepuisTuile(slug: string) {
     selectionnerFiltre(slug);
-    grilleRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setDefilementVersGrilleEnAttente(true);
   }
 
   const categoriesPresentes = types.filter(
@@ -67,13 +83,30 @@ export default function Realisations({
       realisations.some((r) => r.categorie === t.slug) || t.slug === filtre,
   );
 
-  const tuilesMosaique = realisations
-    .filter((r) => r.photos[0])
-    .slice(0, MOSAIQUE_TAILLE);
+  // Une mosaïque à taille fixe (6) peut avaler presque tout un petit catalogue
+  // et ne laisser qu'une ou deux cartes avec description visibles dans la
+  // grille (retour Julien du 25/09/2026 : une seule réalisation affiche son
+  // texte au chargement). On adapte donc sa taille au nombre de réalisations
+  // avec photo, en ne retenant que des tailles qui remplissent proprement le
+  // bento — 0 (pas de mosaïque), 1 (grande tuile seule, pleine largeur), 3
+  // (grande tuile + 2 tuiles qui complètent sa colonne), ou la disposition
+  // complète à 6 tuiles (cf. maquette validée le 26/08/2026) — et en réservant
+  // toujours au moins la moitié du catalogue à la grille détaillée.
+  const TAILLES_MOSAIQUE_PROPRES = [0, 1, 3, MOSAIQUE_TAILLE];
+  const realisationsAvecPhoto = realisations.filter((r) => r.photos[0]);
+  const plafondMosaique = Math.floor(realisationsAvecPhoto.length / 2);
+  const tailleMosaique =
+    TAILLES_MOSAIQUE_PROPRES.filter((taille) => taille <= plafondMosaique).pop() ??
+    0;
+  const tuilesMosaique = realisationsAvecPhoto.slice(0, tailleMosaique);
 
   // Vue "Toutes" : la mosaïque sert déjà de vue d'ensemble, la grille classique
   // n'affiche que le reste pour éviter de montrer deux fois les mêmes chantiers.
+  // Dès qu'un filtre par type est actif (tuile ou chip), la mosaïque — qui n'est
+  // pas elle-même filtrée — est masquée : sinon ses tuiles et la grille filtrée
+  // affichent les mêmes réalisations en double (cf. bug remonté le 25/09/2026).
   const idsMosaique = new Set(tuilesMosaique.map((r) => r.id));
+  const mosaiqueVisible = filtre === "toutes";
   const visibles =
     filtre === "toutes"
       ? realisations.filter((r) => !idsMosaique.has(r.id))
@@ -123,7 +156,7 @@ export default function Realisations({
               ))}
             </div>
 
-            {tuilesMosaique.length > 0 && (
+            {mosaiqueVisible && tuilesMosaique.length > 0 && (
               <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-6 md:auto-rows-[160px] lg:auto-rows-[180px]">
                 {tuilesMosaique.map((r, i) => {
                   const typeLabel = types.find(
@@ -264,7 +297,7 @@ export default function Realisations({
                         </div>
                       )}
                       {r.description && (
-                        <p className="px-4 py-3 text-sm text-neutral-300">
+                        <p className="px-4 pb-4 pt-4 text-sm leading-relaxed text-neutral-200">
                           {r.description}
                         </p>
                       )}
